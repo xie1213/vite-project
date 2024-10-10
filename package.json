@@ -1,0 +1,35 @@
+{
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "element-plus": "^2.8.4",
+    "sass": "^1.79.3",
+    "vue": "^3.4.37",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@types/node": "^22.5.5",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "eslint": "^9.10.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "globals": "^15.9.0",
+    "pinia": "^2.2.4",
+    "sass-embedded": "^1.79.3",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.5.0",
+    "unplugin-auto-import": "^0.18.3",
+    "vite": "^5.4.1",
+    "vite-plugin-svg-icons": "^2.0.1",
+    "vue-tsc": "^2.0.29"
+  }
+}
