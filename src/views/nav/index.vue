@@ -61,7 +61,7 @@
         // flex-direction: ;
         justify-content: space-between; /* 左右分开 */
         align-items: center; /* 垂直居中对齐 */
-
+        margin-bottom: 20px;
         .top-lf {
             @include flex-row;
             gap: 15px; /* 间距 */
