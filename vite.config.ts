@@ -1,60 +1,76 @@
 import { defineConfig, loadEnv, ConfigEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path';
+
 import AutoImport from 'unplugin-auto-import/vite'
-
+import Components from 'unplugin-vue-components/vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-export default defineConfig((mode: ConfigEnv) => {
-  // 加载当前模式下的环境变量
-  const env = loadEnv(mode.mode, process.cwd());
-  const { VITE_PORT, VITE_LOCAL_IP, VITE_DROP_CONSOLE } = env
-  return {
-    plugins: [
-      vue(),
-      AutoImport({
-        imports: ['vue', 'vue-router'],
-        dts: 'src/types/auto-import.d.ts',
-        eslintrc: {
-          enabled: true, // 会在根目录下自动生成 .eslintrc-auto-import.json 文件
-        }
-      }),
-      createSvgIconsPlugin({
-        // 指定需要缓存的图标文件夹
-        iconDirs: [resolve(process.cwd(), 'src/assets/svg-icon')],
-        // 指定symbolId格式
-        symbolId: '[name]',
-      })
-    ],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: "modern-compiler" // or 'modern'
-        }
-      }
-    },
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-    // 其他配置选项
+interface Env {
+  VITE_PORT: number
+  VITE_LOCAL_IP?: string
+  VITE_DROP_CONSOLE?: string
+  VITE_BASE_URL?: string
+}
+
+
+export default defineConfig((mode: ConfigEnv) => {
+
+  const env = loadEnv(mode.mode, process.cwd()) as unknown as Env;
+
+  const { VITE_PORT, VITE_LOCAL_IP, VITE_DROP_CONSOLE, VITE_BASE_URL } = env
+  // 插件配置
+  const plugins = [
+    vue(),
+    AutoImport({
+      imports: ['vue', 'vue-router'],
+      dts: 'src/types/auto-import.d.ts',
+      resolvers: [ElementPlusResolver()],
+      eslintrc: {
+        enabled: true,
+      },
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+    createSvgIconsPlugin({
+      iconDirs: [resolve(process.cwd(), 'src/assets/svg-icon')],
+      symbolId: '[name]',
+    }),
+  ]
+
+  // 开发服务器配置
+  const serverConfig = {
+    port: Number(VITE_PORT) || 3000, // 默认端口
+    open: true,
+    host: VITE_LOCAL_IP || 'localhost',
+    hmr: true,
+  }
+
+  const cssConfig = {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
+    },
+  }
+
+  return {
+    plugins,
+    css: cssConfig,
     define: {
-      'process.env': env, // 将环境变量传递给应用
+      'process.env': env,
     },
-    server: {
-      port: VITE_PORT as unknown as number, // 设置开发服务器端口
-      open: true, // 启动时自动打开浏览器
-      host: VITE_LOCAL_IP || 'localhost', // 设置本地 IP
-      hmr: true,
-    },
+    server: serverConfig,
     esbuild: {
-      pure: VITE_DROP_CONSOLE ? ["console.log", "debugger"] : [], // 根据设置清理控制台输出
+      pure: VITE_DROP_CONSOLE === 'true' ? ["console.log", "debugger"] : [],
     },
-    // 你可以根据 env 进行不同的配置
-    base: env.VITE_BASE_URL || '/', // 使用环境变量设置基本路径
+    base: VITE_BASE_URL || '/',
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src')
-      }
-
-    }
-  };
-});
-
-
+        '@': resolve(__dirname, 'src'),
+      },
+    },
+  }
+})

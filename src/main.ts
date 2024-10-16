@@ -7,11 +7,11 @@ import { createPinia } from 'pinia';
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
-
+import '@/assets/scss/theme.scss'
 
 const app = createApp(App);
+app.use(createPinia())
 app.use(router)
 app.use(svgIcon)
 app.use(ElementPlus)
-app.use(createPinia())
 app.mount('#app')
