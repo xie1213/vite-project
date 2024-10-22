@@ -13,7 +13,6 @@
             <svg-icon v-if="colorIndex === index" :width="15" name="adopt"></svg-icon>
             {{ title }}
         </el-link>
-        <span>234567</span>
     </div>
 </template>
 
