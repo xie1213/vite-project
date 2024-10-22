@@ -14,9 +14,8 @@ export const useThemeStore = defineStore('theme', {
         },
 
         updateCSSVariables(color: string) {
+            // document.documentElement.style.setProperty('--el-link-text-color', "#fff");
             document.documentElement.style.setProperty('--el-color-primary', color);
-            // document.documentElement.style.setProperty('--el-text-color-primary', color);
-            // document.documentElement.style.setProperty('--el-color-primary-hover', color);
             document.documentElement.style.setProperty('--el-color-primary-dark-2', `${getDarkColor(color, 0.1)}`)
             for (let i = 1; i <= 9; i++) {
                 document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(color, i / 10)}`)
