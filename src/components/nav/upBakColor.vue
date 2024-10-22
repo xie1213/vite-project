@@ -13,7 +13,6 @@
             <svg-icon v-if="colorIndex === index" :width="15" name="adopt"></svg-icon>
             {{ title }}
         </el-link>
-        <div>这是是测试内容</div>
     </div>
 </template>
 
